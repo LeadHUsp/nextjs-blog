@@ -1,0 +1,26 @@
+.nav {
+  width: 100%;
+}
+.nav_wrapper {
+  display: block;
+  width: 100%;
+}
+.nav_item {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 20px;
+  color: black;
+  text-transform: uppercase;
+  &:active,
+  &:visited {
+    color: black;
+  }
+  &:hover {
+    color: rgb(231, 228, 10);
+  }
+}
+.active {
+  color: aquamarine !important;
+}
