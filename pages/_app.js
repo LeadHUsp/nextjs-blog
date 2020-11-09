@@ -1,8 +1,14 @@
-import NextNprogress from "nextjs-progressbar";
+import NextNprogress from 'nextjs-progressbar';
+import { Provider } from 'react-redux';
+/* import { createWrapper } from 'next-redux-wrapper'; */
+import { useStore } from '../store/store';
 
-import "../styles/global.scss";
+import store from '../store/store';
+
+import '../styles/global.scss';
 
 function MyApp({ Component, pageProps }) {
+  const store = useStore(pageProps.initialReduxState);
   return (
     <>
       <NextNprogress
@@ -11,7 +17,9 @@ function MyApp({ Component, pageProps }) {
         stopDelayMs="200"
         height="3"
       />
-      <Component {...pageProps} />
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
     </>
   );
 }

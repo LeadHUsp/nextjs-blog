@@ -10,17 +10,43 @@
   width: 100%;
   text-align: center;
   padding: 15px 0;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 400;
   color: black;
   text-transform: uppercase;
   &:active,
   &:visited {
     color: black;
   }
-  &:hover {
-    color: rgb(231, 228, 10);
+}
+
+.nav_item_text {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    background-color: #228896;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 }
-.active {
-  color: aquamarine !important;
+.active,
+.nav_item:hover {
+  .nav_item_text:after {
+    visibility: visible;
+    transform: scaleX(1);
+  }
+  .nav_item_icon {
+    color: #228896;
+  }
+}
+.nav_item_icon {
+  font-size: 16px;
+  padding-right: 7px;
+  transition: 0.3s ease-in;
 }

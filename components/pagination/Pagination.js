@@ -1,10 +1,12 @@
-import s from "./Pagination.module.scss";
-import Link from "next/link";
+import s from './Pagination.module.scss';
+import Link from 'next/link';
 
 export const Pagination = (props) => {
   let pages = [],
     totalPages = Number(props.totalPages),
-    currentPage = Number(props.currentPage) || 1;
+    currentPage = props.currentPage
+      ? Number(props.currentPage.replace(/page_/, ''))
+      : 1;
 
   if (currentPage > 1 && currentPage < totalPages) {
     pages = [currentPage - 1, currentPage, currentPage * 1 + 1];
@@ -35,7 +37,15 @@ export const Pagination = (props) => {
             </li>
           ) : (
             <li key={page}>
-              <Link href={`/${props.slug}/${page}`}>
+              <Link
+                href={{
+                  pathname: '/[slug]/[page]',
+                  query: {
+                    slug: `${props.slug}`,
+                    page: `page_${page}`,
+                  },
+                }}
+              >
                 <a>{page} </a>
               </Link>
             </li>
@@ -44,7 +54,13 @@ export const Pagination = (props) => {
         <li>
           <Link
             className={`${s.page_link} `}
-            href={`/${props.slug}/${totalPages}`}
+            href={{
+              pathname: '/[slug]/[page]',
+              query: {
+                slug: `${props.slug}`,
+                page: `page_${totalPages}`,
+              },
+            }}
           >
             <a>to end</a>
           </Link>

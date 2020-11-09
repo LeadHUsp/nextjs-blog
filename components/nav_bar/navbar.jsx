@@ -1,33 +1,49 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import style from "./navbar.module.scss";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-function LinkItem({ href, text }) {
+//icons import
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faHome,
+  faBookOpen,
+  faLaptopCode,
+  faUserGraduate,
+  faEnvelopeOpenText,
+} from '@fortawesome/free-solid-svg-icons';
+//style
+import style from './navbar.module.scss';
+
+function LinkItem({ href, text, icon }) {
   const router = useRouter();
 
   return (
-    <Link href={href} as="">
+    <Link href={href}>
       <a
         className={`${style.nav_item} ${
-          router.pathname === href ? style.active : ""
+          router.pathname === href || router.query.slug == href.substr(1)
+            ? style.active
+            : ''
         }`}
       >
-        {text}
+        <span className={style.nav_item_text}>
+          <span className={style.nav_item_icon}>
+            <FontAwesomeIcon icon={icon} />
+          </span>
+          {text}
+        </span>
       </a>
     </Link>
   );
 }
 
 export default function NavBar() {
-  const router = useRouter();
-
   return (
     <nav className={style.nav}>
-      <LinkItem href="/" text="home" />
-      <LinkItem href="/blog" text="blog" />
-      <LinkItem href="/portfolio" text="portfolio" />
-      <LinkItem href="/about" text="about" />
-      <LinkItem href="/contact" text="contact" />
+      <LinkItem href="/" text="домой" icon={faHome} />
+      <LinkItem href="/blog" text="блог" icon={faBookOpen} />
+      <LinkItem href="/portfolio" text="портфолио" icon={faLaptopCode} />
+      <LinkItem href="/about" text="о себе" icon={faUserGraduate} />
+      <LinkItem href="/contact" text="контакты" icon={faEnvelopeOpenText} />
     </nav>
   );
 }
