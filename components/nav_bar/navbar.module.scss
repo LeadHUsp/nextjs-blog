@@ -22,6 +22,8 @@
 
 .nav_item_text {
   position: relative;
+  display: inline-flex;
+  align-items: center;
   &:after {
     content: '';
     position: absolute;
@@ -35,6 +37,12 @@
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 }
+.nav_item_icon {
+  font-size: 18px;
+  margin-right: 6px;
+
+  transition: 0.3s ease-in;
+}
 .active,
 .nav_item:hover {
   .nav_item_text:after {
@@ -44,9 +52,4 @@
   .nav_item_icon {
     color: #228896;
   }
-}
-.nav_item_icon {
-  font-size: 16px;
-  padding-right: 7px;
-  transition: 0.3s ease-in;
 }

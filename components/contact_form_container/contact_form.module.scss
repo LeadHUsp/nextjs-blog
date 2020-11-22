@@ -1,0 +1,15 @@
+.animated_layout {
+  position: fixed;
+  border-radius: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  background: #228896dc;
+}
+.wrapper {
+  position: fixed;
+  width: 40%;
+  left: 35%;
+  top: 10%;
+  z-index: 9999;
+}

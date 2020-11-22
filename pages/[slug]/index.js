@@ -1,26 +1,35 @@
 import { useEffect } from 'react';
 
-import * as lodash from 'lodash';
+import { mapValues } from 'lodash';
 
-import { MainLayout } from '../../components/main_layout/main_layout';
 import { useRouter } from 'next/router';
 
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  getPostData,
-  setFilterItems,
-  setSearchUrl,
-} from '../../store/reducers/blogPageReducer';
-
-import BlogCardContainer from '../../components/blog_card/blog_card';
-import { Pagination } from '../../components/pagination/Pagination';
 
 import * as queryString from 'query-string';
+import produce from 'immer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment } from '@fortawesome/free-regular-svg-icons';
+/* components */
+import { MainLayout } from '../../components/main_layout/main_layout';
+import FilterContainer from '../../components/filter_container/filter_container';
+import PortfolioCardContainer from '../../components/single_card/single_card';
+import { Pagination } from '../../components/pagination/Pagination';
+/* global state */
+import {
+  setFilterItems,
+  setSearchUrl,
+  setPostData,
+  addCheckedParam,
+  removeCheckedParam,
+  setCategoriesData,
+  setTagsData,
+} from '../../store/reducers/portfolioPageReducer';
+import { initializeStore } from '../../store/store';
+/* styles */
+import style from './portfolio.module.scss';
 
-import style from './blog.module.scss';
-import FilterCheckBox from '../../components/filter_checkbox/filter_checkbox';
-
-function Blog({ posts_with_cat, totalPages, categories, error }) {
+function Portfolio({ page, totalPages, error }) {
   const router = useRouter();
 
   let currentPage = router.query ? router.query.page : 1;
@@ -30,166 +39,176 @@ function Blog({ posts_with_cat, totalPages, categories, error }) {
   }
 
   const dispatch = useDispatch();
-  const reduxUrl = useSelector((state) => state.blog.url);
+  const cleanUrlState = useSelector((state) => state.portfolio.url);
+  const posts_with_cat = useSelector((state) => state.portfolio.posts);
+  const filter_items = useSelector((state) => state.portfolio.filter_items);
 
-  useEffect(() => {
+  /* Функция достает из query роутера параметры поиска и отправляем их в state */
+  const preventSearchUrl = () => {
     let url = router.query;
 
-    let cleanUrl = lodash.mapValues(url, function (value, key) {
-      if (key === 'slug') {
-        delete url[key];
+    let cleanUrl = mapValues(url, function (value, key) {
+      /* На каждой итерации объекта проверяем значение ключа, slug нужен для корректной работы роутера*/
+      if (key === 'slug' || key === 'page') {
+        return value;
       } else {
-        let arrayValue = value.split(',');
+        /* Создаем объект, где ключ это имя фильтра, а значение массив возможных значений */
+        let arrayValue = value.split('.');
         let arrayValueNumber = arrayValue.map((value) => Number(value));
         return arrayValueNumber;
       }
     });
-    dispatch(setFilterItems(categories));
-    dispatch(setSearchUrl(cleanUrl));
-  }, []);
 
-  return (
-    <MainLayout>
-      <section className={style.page_wrapper}>
-        <h2 className={style.page_title}>
-          Блог с интересными статьями по веб-разработке
-        </h2>
-        <div className="container">
-          <div className={style.filter_wrapper}>
-            <div className={style.filter_item}>Категории</div>
-            {categories.map((category) => {
-              if (category.id === 1) {
-                return '';
+    dispatch(setSearchUrl(cleanUrl));
+  };
+
+  useEffect(() => {
+    /* Преобразование урла роутера нужно на стадии монтирования компонента, чтобы можно было получить данные из урла и синхронизировать с UI. Т.е. пользователь переходит по ссылке, которая уже имеет значения фильтра, и в UI нужные checkbox будут иметь значение true */
+    preventSearchUrl();
+  }, [dispatch]);
+
+  useEffect(() => {
+    let newFilterItems = produce(filter_items, (draftItems) => {
+      mapValues(draftItems, function (value, key) {
+        for (let keyUrl in cleanUrlState) {
+          if (keyUrl === key) {
+            value.map((item_value) => {
+              if (cleanUrlState[keyUrl].includes(item_value.id)) {
+                item_value.isChecked = true;
               } else {
-                if (reduxUrl.category !== undefined) {
-                  reduxUrl.category.map((categoryItem) => {
-                    if (category.id === categoryItem) {
-                      return (
-                        <FilterCheckBox
-                          key={category.id}
-                          cat_id={category.id}
-                          name={category.name}
-                          isChecked={true}
-                        />
-                      );
-                    } else {
-                      return (
-                        <FilterCheckBox
-                          key={category.id}
-                          cat_id={category.id}
-                          name={category.name}
-                          isChecked={false}
-                        />
-                      );
-                    }
-                  });
-                } else {
-                  return (
-                    <FilterCheckBox
-                      key={category.id}
-                      cat_id={category.id}
-                      name={category.name}
-                      isChecked={false}
-                    />
-                  );
-                }
+                item_value.isChecked = false;
               }
-            })}
+              return item_value;
+            });
+          }
+        }
+        return value;
+      });
+    });
+    dispatch(setFilterItems(newFilterItems));
+  }, [cleanUrlState]);
+
+  const onChangeHandler = (itemId, isChecked, taxonomy_key) => {
+    let newCleanUrlState;
+    if (isChecked === true) {
+      newCleanUrlState = produce(cleanUrlState, (draftUrlState) => {
+        draftUrlState[taxonomy_key] = draftUrlState[taxonomy_key].filter(
+          (urlItemId) => urlItemId !== itemId
+        );
+      });
+      dispatch(removeCheckedParam(newCleanUrlState));
+    } else {
+      newCleanUrlState = produce(cleanUrlState, (draftUrl) => {
+        if (cleanUrlState.hasOwnProperty(taxonomy_key)) {
+          draftUrl[taxonomy_key].push(itemId);
+        } else {
+          draftUrl[taxonomy_key] = [itemId];
+        }
+      });
+      dispatch(addCheckedParam(newCleanUrlState));
+    }
+
+    let pushUrl = produce(newCleanUrlState, (draftUrl) => {
+      draftUrl = mapValues(draftUrl, function (value, key) {
+        if (key === 'slug') {
+          return value;
+        } else if (key === 'page') {
+          delete draftUrl[key];
+        } else {
+          if (value.length > 0) {
+            let valueString = value.join('.');
+            draftUrl[key] = valueString;
+          } else {
+            delete draftUrl[key];
+          }
+        }
+      });
+    });
+
+    router.push({
+      pathname: '/[slug]',
+      query: pushUrl,
+    });
+  };
+  return (
+    <MainLayout
+      title={page.meta_title}
+      meta_descr={page.meta_descr}
+      meta_keywords={page.meta_keyw}
+    >
+      <section className={style.page_wrapper}>
+        <h2 className={style.page_title}>портфолио</h2>
+        <div className="container">
+          <div className={style.note_wrapper}>
+            <div className={style.note_perview}>{page.sub_title}</div>
+            <div
+              className={style.note_text}
+              dangerouslySetInnerHTML={{ __html: page.note_text }}
+            ></div>
           </div>
-          {/*  {blog_items.length > 0 ? (
-            <BlogCardContainer posts={blog_items} />
-          ) : (
-            <BlogCardContainer posts={posts_with_cat} />
-          )} */}
-          <BlogCardContainer posts={posts_with_cat} />
+          <div className={style.filter_wrapper}>
+            <FilterContainer
+              title={'Категории работ'}
+              filter_items={filter_items.categories}
+              taxonomy_key={'categories'}
+              onChangeHandler={onChangeHandler}
+            />
+            {/* tags filter */}
+            <FilterContainer
+              title={'Применяемые технологии'}
+              filter_items={filter_items.tags}
+              taxonomy_key={'tags'}
+              onChangeHandler={onChangeHandler}
+            />
+          </div>
+          <PortfolioCardContainer posts={posts_with_cat} />
           <Pagination
-            slug={'blog'}
+            slug={'portfolio'}
             totalPages={totalPages}
             currentPage={currentPage}
+            searchQuery={cleanUrlState}
           />
         </div>
       </section>
     </MainLayout>
   );
 }
-export default Blog;
 
-/* export async function getStaticProps(ctx) {
+export default Portfolio;
 
-  try {
-    const res = await fetch(
-      `${process.env.api_key}/${ctx.params.slug}?per_page=3&page=${
-        ctx.params.page ? ctx.params.page : 1
-      }`
-    );
-
-    const posts = await res.json();
-    const totalPages = await res.headers.get("X-WP-TotalPages");
-    console.log(posts);
-    return {
-      props: {
-        posts,
-        totalPages,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      props: {
-        error: error.message,
-      },
-    };
-  }
-
- 
-}
-export async function getStaticPaths() {
-  return {
-    fallback: false,
-    paths: [{ params: { slug: "blog" } }, { params: { slug: "portfolio" } }],
-  };
-} */
-
-/* export async function getServerSideProps(ctx) {
-  try {
-    const res = await fetch(
-      `${process.env.api_key}/posts?per_page=3&page=${
-        ctx.params.page ? ctx.params.page : 1
-      }`
-    );
-
-    const posts = await res.json();
-    const totalPages = await res.headers.get("X-WP-TotalPages");
-
-    return {
-      props: {
-        posts,
-        totalPages,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      props: {
-        error: error.message,
-      },
-    };
-  }
-}
- */
 export async function getServerSideProps(ctx) {
-  console.log(ctx);
+  const searchQuery = ctx.query;
+  let formatedSeacrQuery = produce(searchQuery, (draftSearchQuery) => {
+    draftSearchQuery = mapValues(draftSearchQuery, function (value, key) {
+      if (key === 'slug' || key === 'page') {
+        delete draftSearchQuery[key];
+      } else {
+        let arrayValue = value.split('.');
+        draftSearchQuery[key] = arrayValue;
+      }
+    });
+  });
+
+  let urlSearchQuery = queryString.stringify(formatedSeacrQuery, {
+    arrayFormat: 'separator',
+    arrayFormatSeparator: ',',
+  });
+
+  const reduxStore = initializeStore();
+  const { dispatch } = reduxStore;
   try {
     const res = await fetch(
-      `${process.env.api_key}/posts?per_page=4&page=${
+      `${process.env.api_key}/posts?per_page=8&page=${
         ctx.query.page ? Number(ctx.query.page.replace(/page_/, '')) : 1
-      }`
+      }&${urlSearchQuery}`
     );
 
     const posts = await res.json();
     const totalPages = await res.headers.get('X-WP-TotalPages');
     const categories_res = await fetch(`${process.env.api_key}/categories`);
     const categories = await categories_res.json();
+    const tags_res = await fetch(`${process.env.api_key}/tags`);
+    const tags = await tags_res.json();
     const posts_with_cat = await posts.map((post) => {
       categories.map((category) => {
         if (post.categories[0] === category.id) {
@@ -198,12 +217,16 @@ export async function getServerSideProps(ctx) {
       });
       return post;
     });
-
+    const page_res = await fetch(`${process.env.api_key}/pages/98`);
+    const page = await page_res.json();
+    await dispatch(setPostData(posts_with_cat));
+    await dispatch(setCategoriesData(categories));
+    await dispatch(setTagsData(tags));
     return {
       props: {
-        posts_with_cat,
+        page: page.acf,
         totalPages,
-        categories,
+        initialReduxState: reduxStore.getState(),
       },
     };
   } catch (error) {

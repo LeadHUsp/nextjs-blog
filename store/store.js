@@ -5,11 +5,12 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
 let store;
+const initialState = {};
 
-function initStore(initialState) {
+function initStore(preloadedState = initialState) {
   return createStore(
     rootReducer,
-    initialState,
+    preloadedState,
     composeWithDevTools(applyMiddleware(thunk))
   );
 }

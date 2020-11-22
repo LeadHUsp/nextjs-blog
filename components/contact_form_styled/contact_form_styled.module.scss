@@ -1,0 +1,96 @@
+.contact_form {
+  padding: 50px;
+  background: #fff;
+  width: 100%;
+  border-radius: 10px;
+}
+.form_title {
+  color: #0f3959;
+  font-size: 24px;
+  font-weight: 600;
+}
+.form_wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-top: 30px;
+}
+.input_wrapper {
+  width: 100%;
+  position: relative;
+  margin: 0 0 35px 0;
+}
+.input,
+.textarea {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 400;
+  color: #333;
+  border: none;
+  border-bottom: 1px solid #777;
+  &:focus {
+    border-bottom: 1px solid #228896;
+  }
+}
+.textarea {
+  resize: none;
+  min-height: 150px;
+}
+.label {
+  position: absolute;
+  left: 0;
+  padding: 5px 0;
+  font-size: 18px;
+  font-weight: 400;
+  color: #333;
+  transition: 0.3s;
+  pointer-events: none;
+}
+.input:focus ~ .label,
+.textarea:focus ~ .label,
+.lable_animate {
+  transform: translateY(-20px);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #228896;
+}
+
+.submit {
+  min-width: 240px;
+  margin: 0 auto;
+  &:disabled {
+    background: #000;
+  }
+}
+.error {
+  position: absolute;
+  right: 0;
+  color: red;
+}
+.checkbox_error {
+  display: block;
+  padding: 15px 0;
+  color: red;
+}
+.close_btn {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  cursor: pointer;
+  background: transparent;
+  &:hover .close_icon {
+    color: #228896;
+    transition: all 0.5s;
+  }
+}
+.link_privacy {
+  color: #228896;
+  &:visited {
+    color: darken(#228896, 5%);
+  }
+  &:hover {
+    color: lighten(#228896, 10%);
+  }
+}

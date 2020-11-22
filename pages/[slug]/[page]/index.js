@@ -1,7 +1,7 @@
-import Blog from '../';
+import Portfolio from '../';
 import { getServerSideProps } from '../';
 
-export default Blog;
+export default Portfolio;
 export { getServerSideProps };
 /* export async function getServerSideProps(ctx) {
   try {

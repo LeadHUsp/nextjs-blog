@@ -1,3 +1,49 @@
 .filter_box {
-  padding: 0 15px;
+  padding: 10px 0;
+  cursor: pointer;
+  label,
+  input {
+    cursor: pointer;
+  }
+}
+.lable {
+  display: flex;
+  align-items: center;
+}
+.checkmark {
+  display: block;
+  position: relative;
+  width: 19px;
+  height: 19px;
+  background: rgb(241, 241, 241);
+  border-radius: 4px;
+  margin-right: 5px;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 11px;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateZ(40deg) scale(2);
+    opacity: 0;
+    transition: all 0.4s;
+  }
+}
+.checkbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+input:checked + .checkmark {
+  background: #228896;
+}
+input:checked + .checkmark::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotateZ(40deg) scale(1);
 }

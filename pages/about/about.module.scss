@@ -1,0 +1,68 @@
+.about {
+  padding-top: 60px;
+  background: url(../../public/img/about.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+}
+.page_intro {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.intro_photo {
+  position: relative;
+  width: 30%;
+  padding: 0 15px;
+}
+.intro_text {
+  width: 70%;
+  padding: 0 15px;
+  text-align: left;
+}
+.intro_title {
+  text-align: left;
+}
+.intro_information {
+  position: relative;
+  background: rgba(231, 231, 231, 0.72);
+
+  padding: 15px;
+  ul > li {
+    padding: 15px 0;
+  }
+}
+.border {
+  position: absolute;
+  background: #228896;
+}
+.border_top_left {
+  left: 0;
+  top: 0;
+  width: 23%;
+  height: 4px;
+}
+.border_bottom_left {
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 43%;
+}
+.border_top_right {
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  height: 43%;
+}
+.border_bottom_right {
+  right: 0;
+  bottom: 0;
+  width: 23%;
+  height: 4px;
+}
+
+.icon_download {
+  margin-left: 10px;
+}

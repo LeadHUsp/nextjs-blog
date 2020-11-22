@@ -1,0 +1,36 @@
+.filter_item {
+  position: relative;
+  width: 30%;
+  background: #fff;
+
+  border-radius: 10px;
+}
+.filter_item_title {
+  position: relative;
+  padding: 15px;
+  cursor: pointer;
+}
+.filter_item_icon {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  transition: transform 0.7s ease-in-out;
+}
+.filter_item_body {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.6s ease-in-out;
+}
+.filter_item_content {
+  padding-left: 10px;
+  border-top: 2px solid;
+  border-image: linear-gradient(to right, transparent, #228896, transparent) 1;
+}
+.filter_item_active {
+  .filter_item_icon {
+    transform: rotate(-180deg);
+  }
+  .filter_item_body {
+    max-height: 350px;
+  }
+}

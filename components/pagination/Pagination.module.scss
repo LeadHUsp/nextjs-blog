@@ -1,6 +1,9 @@
+$main-color: #228896;
+
 .pagination_container {
   width: 100%;
   margin: 0;
+  padding: 40px 0;
 
   ul {
     margin-bottom: 30px;
@@ -23,11 +26,11 @@
       margin-left: 10px;
 
       &:hover {
-        border: 1px solid #f6731c;
-        color: #f6731c;
+        border: 1px solid $main-color;
+        color: $main-color;
 
         a {
-          color: #f6731c;
+          color: $main-color;
         }
       }
 
@@ -48,7 +51,7 @@
 }
 
 .active {
-  background-color: #f6731c;
+  background-color: $main-color;
   color: #fff;
   border-radius: 3px;
   text-align: center;

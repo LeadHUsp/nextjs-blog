@@ -1,7 +1,29 @@
-import s from './Pagination.module.scss';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import produce from 'immer';
+import { mapValues } from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+} from '@fortawesome/free-solid-svg-icons';
+
+import s from './Pagination.module.scss';
 
 export const Pagination = (props) => {
+  const cleanUrlState = useSelector((state) => state.portfolio.url);
+  let pushUrl = produce(cleanUrlState, (draftUrl) => {
+    draftUrl = mapValues(draftUrl, function (value, key) {
+      if (key === 'slug') {
+        return value;
+      } else if (key === 'page') {
+        delete draftUrl[key];
+      } else {
+        let valueString = value.join('.');
+        draftUrl[key] = valueString;
+      }
+    });
+  });
   let pages = [],
     totalPages = Number(props.totalPages),
     currentPage = props.currentPage
@@ -27,7 +49,10 @@ export const Pagination = (props) => {
       <ul>
         <li>
           <Link className={`${s.page_link} `} href={`/${props.slug}`}>
-            <a>to start</a>
+            <a>
+              {' '}
+              <FontAwesomeIcon icon={faAngleDoubleLeft} />
+            </a>
           </Link>
         </li>
         {pages.map((page) =>
@@ -41,8 +66,8 @@ export const Pagination = (props) => {
                 href={{
                   pathname: '/[slug]/[page]',
                   query: {
-                    slug: `${props.slug}`,
                     page: `page_${page}`,
+                    ...pushUrl,
                   },
                 }}
               >
@@ -62,7 +87,9 @@ export const Pagination = (props) => {
               },
             }}
           >
-            <a>to end</a>
+            <a>
+              <FontAwesomeIcon icon={faAngleDoubleRight} />
+            </a>
           </Link>
         </li>
       </ul>

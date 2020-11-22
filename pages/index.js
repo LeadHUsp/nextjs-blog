@@ -1,11 +1,6 @@
-import { useEffect, useState } from 'react';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { getPostData, setPostData } from '../store/reducers/blogPageReducer';
-
+import { useEffect } from 'react';
 import SwiperCore, { Pagination, EffectFade, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHtml5,
@@ -13,41 +8,19 @@ import {
   faJsSquare,
   faReact,
 } from '@fortawesome/free-brands-svg-icons';
-
 import { motion, useAnimation } from 'framer-motion';
-
 import { useInView } from 'react-intersection-observer';
 
+/* components */
 import { MainLayout } from '../components/main_layout/main_layout';
-
-import BlogCardContainer from '../components/blog_card/blog_card';
-
+import PortfolioCardContainer from '../components/single_card/single_card';
+/* styles */
 import style from './home_page.module.scss';
 
 function Home({ page, posts_with_cat, error }) {
   if (error) {
     return <div>{error} </div>;
   }
-  /*   const blog_items = useSelector((state) => state.home.posts);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setPostData(posts));
-  }, [posts]);
-  console.log(blog_items);
-  const [postsLocaly, setpostsLocaly] = useState([]);
-  useEffect(() => {
-    let postWithCat = blog_items.map((post) => {
-      cat.map((category) => {
-        if (post.categories[0] === category.id) {
-          post.categories[0] = category.name;
-        }
-      });
-
-      return post;
-    });
-
-    setpostsLocaly(postWithCat);
-  }, [posts]); */
 
   SwiperCore.use([EffectFade, Pagination, Autoplay]);
   const variants = {
@@ -112,9 +85,9 @@ function Home({ page, posts_with_cat, error }) {
 
   return (
     <MainLayout
-      title={page[0].acf.meta_title}
-      meta_descr={page[0].acf.meta_descr}
-      meta_keywords={page[0].acf.meta_keyw}
+      title={page.meta_title}
+      meta_descr={page.meta_descr}
+      meta_keywords={page.meta_keyw}
     >
       <div className={style.slider_wrapper}>
         <Swiper
@@ -130,7 +103,7 @@ function Home({ page, posts_with_cat, error }) {
             modifierClass: '',
           }}
         >
-          {page[0].acf.gallery.map((item, index) => {
+          {page.gallery.map((item, index) => {
             return (
               <SwiperSlide key={item.id} key={index + 1}>
                 {({ isActive }) => (
@@ -207,8 +180,8 @@ function Home({ page, posts_with_cat, error }) {
       </section>
       <section className={style.blog}>
         <div className="container">
-          <h2>Последние записи блога</h2>
-          <BlogCardContainer posts={posts_with_cat} />
+          <h2>Последние работы в портфолио</h2>
+          <PortfolioCardContainer posts={posts_with_cat} />
         </div>
       </section>
     </MainLayout>
@@ -218,7 +191,7 @@ function Home({ page, posts_with_cat, error }) {
 export default Home;
 export async function getServerSideProps() {
   try {
-    const res = await fetch(`${process.env.api_key}/pages?slug=home`);
+    const res = await fetch(`${process.env.api_key}/pages/38`);
     const page = await res.json();
     const blog = await fetch(`${process.env.api_key}/posts?per_page=4`);
     const posts = await blog.json();
@@ -234,7 +207,7 @@ export async function getServerSideProps() {
     });
     return {
       props: {
-        page,
+        page: page.acf,
         posts_with_cat,
       },
     };

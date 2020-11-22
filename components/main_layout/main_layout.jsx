@@ -1,8 +1,11 @@
 import Head from 'next/head';
-
-import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 
 import NavBar from '../nav_bar/navbar';
+import Footer from '../footer/footer';
+import ContactForm from '../contact_form_container/contact_form_container';
+
+import { motion, AnimatePresence } from 'framer-motion';
 
 import style from './main_layout.module.scss';
 
@@ -12,6 +15,7 @@ export function MainLayout({
   meta_descr = 'blog on Next js',
   meta_keywords = 'blog react next redux',
 }) {
+  const formAppearance = useSelector((state) => state.contact.is_open);
   return (
     <>
       <Head>
@@ -24,9 +28,13 @@ export function MainLayout({
       <aside className={style.aside}>
         <h1 className={style.title}>Personal site</h1>
         <NavBar />
-        <div className={style.footer}>will be a footer with social links</div>
+        <Footer />
       </aside>
-      <main className={style.main}>{children}</main>
+
+      <motion.main className={style.main}>
+        {children}
+        <AnimatePresence>{formAppearance && <ContactForm />}</AnimatePresence>
+      </motion.main>
     </>
   );
 }

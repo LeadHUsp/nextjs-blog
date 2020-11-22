@@ -1,9 +1,8 @@
 import NextNprogress from 'nextjs-progressbar';
 import { Provider } from 'react-redux';
+import { motion, AnimatePresence } from 'framer-motion';
 /* import { createWrapper } from 'next-redux-wrapper'; */
 import { useStore } from '../store/store';
-
-import store from '../store/store';
 
 import '../styles/global.scss';
 
@@ -13,7 +12,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <NextNprogress
         color="#39054a"
-        startPosition="0.5"
+        startPosition="0.7"
         stopDelayMs="200"
         height="3"
       />

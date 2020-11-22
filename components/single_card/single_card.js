@@ -11,9 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandPointUp } from '@fortawesome/free-regular-svg-icons';
 import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 
-import style from './blog_card.module.scss';
+import style from './single_card.module.scss';
 
-function BlogCard({ animateControl, index, post }) {
+function PortfolioCard({ animateControl, index, post }) {
   const [isHovered, setHovered] = useState(false);
   const [direction, setDirection] = useState({ x: 0, left: 0 });
   const cardEl = useRef(null);
@@ -109,7 +109,7 @@ function BlogCard({ animateControl, index, post }) {
       </motion.div>
 
       <div className={style.card_img}>
-        <img src="/img/img-1.jpg" alt="" />
+        <img src={post.better_featured_image.source_url} alt="" />
         <div className={style.card_icon}>
           <FontAwesomeIcon icon={faHandPointUp} />
           &nbsp;Наведите, чтобы узнать подробнее
@@ -122,6 +122,7 @@ function BlogCard({ animateControl, index, post }) {
           Категория: {post.categories[0]}
         </div>
         <div className={style.card_announcement}>{post.acf.announcement}</div>
+
         <Link href={`/single_post/${post.slug}`}>
           <a className={`${style.link_readmore} ${style.card_link}`}>
             Подробнее
@@ -132,7 +133,7 @@ function BlogCard({ animateControl, index, post }) {
   );
 }
 
-function BlogCardContainer({ posts }) {
+function PortfolioCardContainer({ posts }) {
   const { ref, inView, entry } = useInView({ triggerOnce: true });
   const controlBlogItem = useAnimation();
   useEffect(() => {
@@ -146,10 +147,10 @@ function BlogCardContainer({ posts }) {
   }, [posts, inView]);
 
   return (
-    <div className={style.blog_list} ref={ref}>
+    <div className={style.card_list} ref={ref}>
       {posts.map((post, index) => {
         return (
-          <BlogCard
+          <PortfolioCard
             animateControl={controlBlogItem}
             index={index}
             post={post}
@@ -161,4 +162,4 @@ function BlogCardContainer({ posts }) {
   );
 }
 
-export default BlogCardContainer;
+export default PortfolioCardContainer;
