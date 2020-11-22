@@ -52,7 +52,7 @@ function Portfolio({ page, totalPages, error }) {
       if (key === 'slug' || key === 'page') {
         return value;
       } else {
-        /* Создаем объект, где ключ это имя фильтра, а значение массив возможных значений */
+        /* Создаем объект, где ключ это имя фильтра, а значение массив значений фильтра */
         let arrayValue = value.split('.');
         let arrayValueNumber = arrayValue.map((value) => Number(value));
         return arrayValueNumber;
@@ -111,7 +111,8 @@ function Portfolio({ page, totalPages, error }) {
     let pushUrl = produce(newCleanUrlState, (draftUrl) => {
       draftUrl = mapValues(draftUrl, function (value, key) {
         if (key === 'slug') {
-          return value;
+          delete draftUrl[key];
+          /*  return value; */
         } else if (key === 'page') {
           delete draftUrl[key];
         } else {
@@ -126,7 +127,7 @@ function Portfolio({ page, totalPages, error }) {
     });
 
     router.push({
-      pathname: '/[slug]',
+      pathname: `/${router.query.slug}`,
       query: pushUrl,
     });
   };
