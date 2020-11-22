@@ -1,5 +1,5 @@
 module.exports = {
   env: {
-    api_key: 'http://f0489747.xsph.ru/wp-json/wp/v2',
+    api_key: 'https://blog-ssr.000webhostapp.com/wp-json/wp/v2',
   },
 };
