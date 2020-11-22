@@ -92,8 +92,8 @@ function CheckBox({ name, closeForm }) {
   );
 }
 const initialValues = {
-  name: '',
-  email: '',
+  user_name: '',
+  user_email: '',
   acceptedPrivacy: false,
   message: '',
 };
@@ -156,7 +156,7 @@ export default function ContactFormStyled({ closeForm }) {
         onSubmit={async (values) => {
           // Default options are marked with *
           const response = await fetch(
-            'https://react-base.000webhostapp.com/wp-json/contact-form-7/v1/contact-forms/344/feedback',
+            'http://f0489747.xsph.ru/wp-json/contact-form-7/v1/contact-forms/344/feedback',
             {
               method: 'POST', // *GET, POST, PUT, DELETE, etc.
               mode: 'cors', // no-cors, *cors, same-origin
@@ -176,8 +176,8 @@ export default function ContactFormStyled({ closeForm }) {
       >
         {({ values, errors, isSubmitting, isValidating }) => (
           <Form>
-            <Input name="name" label="Имя" />
-            <Input name="email" label="Email" />
+            <Input name="user_name" label="Имя" />
+            <Input name="user_email" label="Email" />
             <TextArea name="message" label="Сообщение" />
             <CheckBox name="acceptedPrivacy" closeForm={closeForm} />
             <div className={style.input_wrapper}>
