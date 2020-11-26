@@ -90,7 +90,7 @@ function Home({ page, posts_with_cat, error }) {
       meta_keywords={page.meta_keyw}
     >
       <div className={style.slider_wrapper}>
-        {/*    <Swiper
+        <Swiper
           effect="fade"
           autoplay={{ delay: 5000 }}
           pagination={{
@@ -112,28 +112,28 @@ function Home({ page, posts_with_cat, error }) {
                       backgroundImage: `url(${item.image})`,
                     }}
                   >
-                    <motion.div
-                      initial="hidden"
+                    <div
+                      /*    initial="hidden"
                       animate={isActive ? 'visible' : 'hidden'}
                       variants={variants}
-                      transition={{ ease: 'easeOut', duration: 1 }}
+                      transition={{ ease: 'easeOut', duration: 1 }} */
                       className={style.slide_title}
                     >
                       {item.title}
-                    </motion.div>
-                    <motion.div
-                      initial="hidden"
+                    </div>
+                    <div
+                      /* initial="hidden"
                       animate={isActive ? 'visible' : 'hidden'}
                       variants={variants}
                       transition={{
                         ease: 'easeOut',
                         duration: 0.5,
                         delay: 0.5,
-                      }}
+                      }} */
                       className={style.slide_text}
                     >
                       {item.text}
-                    </motion.div>
+                    </div>
                   </div>
                 )}
               </SwiperSlide>
@@ -145,7 +145,7 @@ function Home({ page, posts_with_cat, error }) {
             transition={{ ease: 'easeOut', duration: 1, delay: 1 }}
             className={style.pagination_wrapper}
           ></motion.ul>
-        </Swiper> */}
+        </Swiper>
       </div>
 
       <section className={style.technology}>
