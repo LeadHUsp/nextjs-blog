@@ -90,7 +90,7 @@ function Home({ page, posts_with_cat, error }) {
       meta_keywords={page.meta_keyw}
     >
       <div className={style.slider_wrapper}>
-        <Swiper
+        {/*    <Swiper
           effect="fade"
           autoplay={{ delay: 5000 }}
           pagination={{
@@ -145,7 +145,7 @@ function Home({ page, posts_with_cat, error }) {
             transition={{ ease: 'easeOut', duration: 1, delay: 1 }}
             className={style.pagination_wrapper}
           ></motion.ul>
-        </Swiper>
+        </Swiper> */}
       </div>
 
       <section className={style.technology}>
