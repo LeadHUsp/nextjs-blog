@@ -17,7 +17,7 @@ function AnimatedInput({ textarea, label, field, form, ...props }) {
   const [hasText, setHasText] = useState(false);
 
   useEffect(() => {
-    console.log(field);
+    /*  console.log(field); */
     if (field.value !== '') {
       setHasText(true);
     } else {
@@ -155,22 +155,19 @@ export default function ContactFormStyled({ closeForm }) {
         initialValues={initialValues}
         onSubmit={async (values) => {
           // Default options are marked with *
-          const response = await fetch(
-            'http://f0489747.xsph.ru/wp-json/contact-form-7/v1/contact-forms/344/feedback',
-            {
-              method: 'POST', // *GET, POST, PUT, DELETE, etc.
-              mode: 'cors', // no-cors, *cors, same-origin
-              cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-              credentials: 'same-origin', // include, *same-origin, omit
-              headers: {
-                'Content-Type': 'multipart/form-data',
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              redirect: 'follow', // manual, *follow, error
-              referrerPolicy: 'no-referrer', // no-referrer, *client
-              body: JSON.stringify(values), // body data type must match "Content-Type" header
-            }
-          );
+          const response = await fetch(`${process.env.api_contact_form}`, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify(values), // body data type must match "Content-Type" header
+          });
           await console.log(response.json()); // parses JSON response into native JavaScript objects
         }}
       >
