@@ -14,6 +14,7 @@ function SocialLink({ link, bgColor, icon }) {
   return (
     <motion.a
       href={link}
+      target="_blank"
       className={style.social_link}
       whileHover={{
         borderRadius: '50%',
@@ -54,9 +55,21 @@ function Footer() {
       </div>
 
       <div className={style.social_links}>
-        <SocialLink link="http://" bgColor="#2787F5" icon={<FaVk />} />
-        <SocialLink link="http://" bgColor="#08c" icon={<FaTelegram />} />
-        <SocialLink link="http://" bgColor="#00aff0" icon={<FaSkype />} />
+        <SocialLink
+          link="https://vk.com/id41874826"
+          bgColor="#2787F5"
+          icon={<FaVk />}
+        />
+        <SocialLink
+          link="https://t.me/Bogdanvv"
+          bgColor="#08c"
+          icon={<FaTelegram />}
+        />
+        <SocialLink
+          link="skype:vinokurovbd?chat"
+          bgColor="#00aff0"
+          icon={<FaSkype />}
+        />
       </div>
     </div>
   );

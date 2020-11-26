@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import emailjs from 'emailjs-com';
 
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -92,10 +93,10 @@ function CheckBox({ name, closeForm }) {
   );
 }
 const initialValues = {
-  user_name: '',
-  user_email: '',
+  name: '',
+  email: '',
   acceptedPrivacy: false,
-  user_message: '',
+  message: '',
 };
 
 /* async (values) => {
@@ -137,11 +138,11 @@ export default function ContactFormStyled({ closeForm }) {
       <h2 className={style.form_title}>Отправьте мне сообщение</h2>
       <Formik
         validationSchema={object({
-          user_name: string()
+          name: string()
             .required('Имя обязательно для заполнения')
             .min(2, 'Имя должно быть длинее чем 2 символа')
             .max(100),
-          user_email: string()
+          email: string()
             .required('Поле email обязательно для заполнения')
             .min(2, 'Поле email должно быть длинее чем 2 символа')
             .max(100)
@@ -154,7 +155,7 @@ export default function ContactFormStyled({ closeForm }) {
             'Вы должны прочесть и согласиться с политикой'
           ),
 
-          user_message: string()
+          message: string()
             .required('Сообщение обязательно для заполнения')
             .min(3)
             .max(100),
@@ -163,18 +164,35 @@ export default function ContactFormStyled({ closeForm }) {
         onSubmit={async (values) => {
           try {
             // Default options are marked with *
-            console.log(JSON.stringify(values));
-            const response = await fetch(`${process.env.api_contact_form}`, {
-              method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            let data = {
+              service_id: process.env.email_services_id,
+              template_id: process.env.email_template_id,
+              user_id: process.env.email_user_id,
+              template_params: values,
+            };
+            const response = await fetch(
+              `https://api.emailjs.com/api/v1.0/email/send`,
+              {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
 
-              headers: {
-                'Content-Type': 'application/json',
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-              },
-
-              body: JSON.stringify(values), // body data type must match "Content-Type" header
-            });
-            return await console.log(response); // parses JSON response into native JavaScript objects
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                  'Content-Type': 'application/json',
+                  // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *client
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
+              }
+            );
+            console.log(response); // parses JSON response into native JavaScript objects
+            /* let res = await emailjs.sendForm(
+              process.env.email_services_id,
+              process.env.email_template_id,
+              values,
+              process.env.email_user_id
+            );
+            console.log(res); */
           } catch (error) {
             console.log(error);
           }
@@ -182,9 +200,9 @@ export default function ContactFormStyled({ closeForm }) {
       >
         {({ values, errors, isSubmitting, isValidating }) => (
           <Form>
-            <Input name="user_name" label="Имя" />
-            <Input name="user_email" label="Email" />
-            <TextArea name="user_message" label="Сообщение" />
+            <Input name="name" label="Имя" />
+            <Input name="email" label="Email" />
+            <TextArea name="message" label="Сообщение" />
             <CheckBox name="acceptedPrivacy" closeForm={closeForm} />
             <div className={style.input_wrapper}>
               <button
