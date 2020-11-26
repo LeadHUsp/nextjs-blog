@@ -98,3 +98,71 @@
 .blog {
   padding-bottom: 80px;
 }
+@media (max-width: 767.999px) {
+  .slider_wrapper {
+    height: 60vh;
+  }
+  .slide_title {
+    font-size: 35px;
+  }
+  .slide_text {
+    font-size: 20px;
+  }
+  .technology {
+    padding-bottom: 35px;
+  }
+
+  .technology_item {
+    width: 100%;
+    padding-bottom: 20px;
+    &:nth-child(even) {
+      .technology_icon {
+        order: 2;
+      }
+      .technology_descr {
+        order: 1;
+        .technology_title {
+          text-align: right;
+        }
+      }
+    }
+  }
+  .technology_title {
+    font-size: 16px;
+  }
+  .technology_text {
+    font-size: 14px;
+  }
+  .technology_icon {
+    width: 70px;
+    height: 70px;
+    font-size: 40px;
+  }
+  .technology_descr {
+    width: calc(100% - 70px);
+  }
+}
+@media (max-width: 575.999px) {
+  .technology {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .technology_icon {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+  .technology_descr {
+    width: calc(100% - 40px);
+  }
+}
+@media (max-width: 450.999px) {
+  .slide_title {
+    font-size: 29px;
+    width: 85%;
+  }
+  .slide_text {
+    font-size: 16px;
+    width: 90%;
+  }
+}

@@ -96,3 +96,24 @@
   color: #fff;
   padding: 10px;
 }
+@media (max-width: 998.999px) {
+  .blog_card {
+    width: calc(50% - 20px);
+  }
+}
+@media (max-width: 767.999px) {
+  .card_title {
+    font-size: 15px;
+  }
+  .card_category {
+    font-size: 14px;
+  }
+  .card_announcement {
+    font-size: 14px;
+  }
+}
+@media (max-width: 599.999px) {
+  .blog_card {
+    width: calc(100% - 20px);
+  }
+}

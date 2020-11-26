@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import emailjs from 'emailjs-com';
 
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
