@@ -92,7 +92,6 @@ function Home({ page, posts_with_cat, error }) {
       <div className={style.slider_wrapper}>
         <Swiper
           effect="fade"
-          loop
           autoplay={{ delay: 5000 }}
           pagination={{
             clickable: true,
