@@ -95,26 +95,33 @@ const initialValues = {
   user_name: '',
   user_email: '',
   acceptedPrivacy: false,
-  message: '',
+  user_message: '',
 };
 
-async function postData(url = '', data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *client
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  });
-  return await response.json(); // parses JSON response into native JavaScript objects
-}
+/* async (values) => {
+  try {
+    // Default options are marked with *
+    console.log(values);
+    const response = await fetch(
+      `http://localhost:8000/auth/register`,
+      {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *client
+        body: JSON.stringify(values), // body data type must match "Content-Type" header
+      }
+    );
+    return await console.log(response.json()); // parses JSON response into native JavaScript objects
+  } catch (error) {
+    console.log(error);
+  }
+} */
 
 export default function ContactFormStyled({ closeForm }) {
   const dispatch = useDispatch();
@@ -130,11 +137,11 @@ export default function ContactFormStyled({ closeForm }) {
       <h2 className={style.form_title}>Отправьте мне сообщение</h2>
       <Formik
         validationSchema={object({
-          name: string()
+          user_name: string()
             .required('Имя обязательно для заполнения')
             .min(2, 'Имя должно быть длинее чем 2 символа')
             .max(100),
-          email: string()
+          user_email: string()
             .required('Поле email обязательно для заполнения')
             .min(2, 'Поле email должно быть длинее чем 2 символа')
             .max(100)
@@ -147,43 +154,49 @@ export default function ContactFormStyled({ closeForm }) {
             'Вы должны прочесть и согласиться с политикой'
           ),
 
-          message: string()
+          user_message: string()
             .required('Сообщение обязательно для заполнения')
-            .min(20)
+            .min(3)
             .max(100),
         })}
         initialValues={initialValues}
         onSubmit={async (values) => {
-          // Default options are marked with *
-          const response = await fetch(`${process.env.api_contact_form}`, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *client
-            body: JSON.stringify(values), // body data type must match "Content-Type" header
-          });
-          await console.log(response.json()); // parses JSON response into native JavaScript objects
+          try {
+            // Default options are marked with *
+            console.log(JSON.stringify(values));
+            const response = await fetch(`${process.env.api_contact_form}`, {
+              method: 'POST', // *GET, POST, PUT, DELETE, etc.
+
+              headers: {
+                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+              },
+
+              body: JSON.stringify(values), // body data type must match "Content-Type" header
+            });
+            return await console.log(response); // parses JSON response into native JavaScript objects
+          } catch (error) {
+            console.log(error);
+          }
         }}
       >
         {({ values, errors, isSubmitting, isValidating }) => (
           <Form>
             <Input name="user_name" label="Имя" />
             <Input name="user_email" label="Email" />
-            <TextArea name="message" label="Сообщение" />
+            <TextArea name="user_message" label="Сообщение" />
             <CheckBox name="acceptedPrivacy" closeForm={closeForm} />
             <div className={style.input_wrapper}>
-              <input
+              <button
                 className={`download ${style.submit}`}
                 type="submit"
-                value="Отправить"
-                disabled={isSubmitting || isValidating}
-              />
+                /*  disabled={isSubmitting || isValidating} */
+              >
+                {' '}
+                Отправить
+              </button>
+              {isSubmitting && 'is Submitting'}
+              {isValidating && 'is Validating'}
             </div>
           </Form>
         )}
