@@ -112,28 +112,28 @@ function Home({ page, posts_with_cat, error }) {
                       backgroundImage: `url(${item.image})`,
                     }}
                   >
-                    <div
-                      /*    initial="hidden"
+                    <motion.div
+                      initial="hidden"
                       animate={isActive ? 'visible' : 'hidden'}
                       variants={variants}
-                      transition={{ ease: 'easeOut', duration: 1 }} */
+                      transition={{ ease: 'easeOut', duration: 1 }}
                       className={style.slide_title}
                     >
                       {item.title}
-                    </div>
-                    <div
-                      /* initial="hidden"
+                    </motion.div>
+                    <motion.div
+                      initial="hidden"
                       animate={isActive ? 'visible' : 'hidden'}
                       variants={variants}
                       transition={{
                         ease: 'easeOut',
                         duration: 0.5,
                         delay: 0.5,
-                      }} */
+                      }}
                       className={style.slide_text}
                     >
                       {item.text}
-                    </div>
+                    </motion.div>
                   </div>
                 )}
               </SwiperSlide>
