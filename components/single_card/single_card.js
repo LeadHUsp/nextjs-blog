@@ -83,7 +83,7 @@ function PortfolioCard({ animateControl, index, post }) {
   };
   const { ref, inView, entry } = useInView({
     triggerOnce: true,
-    threshold: 0.5,
+    threshold: 0.2,
   });
   useEffect(() => {
     if (inView && windowWidth <= 600) {
