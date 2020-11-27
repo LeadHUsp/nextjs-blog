@@ -103,7 +103,7 @@ function PortfolioCard({ animateControl, index, post }) {
       /*   onMouseMove={() => {
         setHovered(true);
       }} */
-      onTap={onMouseEnterHandler}
+      onClick={onMouseEnterHandler}
       onMouseEnter={onMouseEnterHandler}
       onMouseLeave={onMouseLeaveHeandler}
       ref={cardEl}
