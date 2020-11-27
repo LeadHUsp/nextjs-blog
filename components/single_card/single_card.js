@@ -15,32 +15,23 @@ import style from './single_card.module.scss';
 
 function PortfolioCard({ animateControl, index, post }) {
   const [isHovered, setHovered] = useState(false);
-  const [direction, setDirection] = useState({ x: 0, left: 0 });
+
+  let windowWidth;
+  typeof window !== 'undefined' ? (windowWidth = window.innerWidth) : null;
+
   const cardEl = useRef(null);
 
+  const controlCircle = useAnimation();
+  const responsiveCardControl = useAnimation();
   const onMouseEnterHandler = (e) => {
-    setHovered(true);
     let elem = cardEl.current.getBoundingClientRect();
     let x = e.pageX - (elem.left + pageXOffset);
     let y = e.pageY - (elem.top + pageYOffset);
-    setDirection({ top: y, left: x });
-    y = -(y / 2);
-    x = -(x / 2);
-  };
-  const onMouseLeaveHeandler = (e) => {
-    setHovered(false);
-    let elem = cardEl.current.getBoundingClientRect();
-    let x = e.pageX - (elem.left + pageXOffset);
-    let y = e.pageY - (elem.top + pageYOffset);
-    setDirection({ top: y, left: x });
-    y = -(y / 2);
-    x = -(x / 2);
-  };
 
-  const variants = {
-    visible: {
-      top: direction.top,
-      left: direction.left,
+    controlCircle.set({ top: y, left: x });
+    controlCircle.start({
+      top: y,
+      left: x,
       x: '-50%',
       y: '-50%',
       opacity: 1,
@@ -50,23 +41,33 @@ function PortfolioCard({ animateControl, index, post }) {
         duration: 0.5,
         ease: 'easeIn',
       },
-    },
-    hidden: {
+    });
+    setHovered(true);
+  };
+  const onMouseLeaveHeandler = (e) => {
+    let elem = cardEl.current.getBoundingClientRect();
+    let x = e.pageX - (elem.left + pageXOffset);
+    let y = e.pageY - (elem.top + pageYOffset);
+
+    controlCircle.start({
       opacity: 1,
       width: 0,
       height: 0,
-      top: direction.top,
-      left: direction.left,
+      top: y,
+      left: x,
       transition: {
         duration: 0.3,
         ease: 'easeOut',
       },
-    },
+    });
+
+    setHovered(false);
   };
 
   const linkVariants = {
     visible: {
       opacity: 1,
+      visibility: 'visible',
       y: 0,
       transition: {
         duration: 0.5,
@@ -76,23 +77,40 @@ function PortfolioCard({ animateControl, index, post }) {
     },
     hidden: {
       opacity: 0,
+      visibility: 'hidden',
       y: '30%',
     },
   };
+  const { ref, inView, entry } = useInView({
+    triggerOnce: true,
+    threshold: 0.5,
+  });
+  useEffect(() => {
+    if (inView && windowWidth <= 600) {
+      responsiveCardControl.start({
+        opacity: 1,
+        x: 0,
+        transition: { ease: 'easeOut', duration: 1 },
+      });
+    }
+  }, [inView]);
   return (
     <motion.div
       initial={{ opacity: 0, x: -200 }}
-      animate={animateControl}
-      custom={index}
+      animate={windowWidth > 600 ? animateControl : responsiveCardControl}
+      custom={windowWidth > 600 && index}
       className={style.blog_card}
+      onMouseMove={() => {
+        setHovered(true);
+      }}
       onMouseEnter={onMouseEnterHandler}
       onMouseLeave={onMouseLeaveHeandler}
       ref={cardEl}
+      ref={ref}
     >
       <motion.div
         initial="hidden"
-        animate={isHovered ? 'visible' : 'hidden'}
-        variants={variants}
+        animate={controlCircle}
         className={style.card_layer}
       ></motion.div>
       <motion.div
@@ -134,10 +152,12 @@ function PortfolioCard({ animateControl, index, post }) {
 }
 
 function PortfolioCardContainer({ posts }) {
+  let windowWidth;
+  typeof window !== 'undefined' ? (windowWidth = window.innerWidth) : null;
   const { ref, inView, entry } = useInView({ triggerOnce: true });
   const controlBlogItem = useAnimation();
   useEffect(() => {
-    if (inView) {
+    if (inView && windowWidth > 600) {
       controlBlogItem.start((i) => ({
         opacity: 1,
         x: 0,
