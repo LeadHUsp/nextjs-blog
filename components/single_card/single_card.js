@@ -100,13 +100,13 @@ function PortfolioCard({ animateControl, index, post }) {
       animate={windowWidth > 600 ? animateControl : responsiveCardControl}
       custom={windowWidth > 600 && index}
       className={style.blog_card}
-      onMouseMove={() => {
+      /*   onMouseMove={() => {
         setHovered(true);
-      }}
+      }} */
+      onTap={onMouseEnterHandler}
       onMouseEnter={onMouseEnterHandler}
       onMouseLeave={onMouseLeaveHeandler}
       ref={cardEl}
-      ref={ref}
     >
       <motion.div
         initial="hidden"
@@ -126,7 +126,7 @@ function PortfolioCard({ animateControl, index, post }) {
         </Link>
       </motion.div>
 
-      <div className={style.card_img}>
+      <div className={style.card_img} ref={ref}>
         <img src={post.better_featured_image.source_url} alt="" />
         <div className={style.card_icon}>
           <FontAwesomeIcon icon={faHandPointUp} />
