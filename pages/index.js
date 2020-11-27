@@ -81,6 +81,7 @@ function Home({ page, posts_with_cat, error }) {
 
   useEffect(() => {
     ItemTrigger(inView);
+    console.log(inView);
   }, [controls, inView]);
 
   return (
@@ -91,8 +92,8 @@ function Home({ page, posts_with_cat, error }) {
     >
       <div className={style.slider_wrapper}>
         <Swiper
-          direction="vertical"
-          autoplay={{ delay: 5000 }}
+          /* autoplay={{ delay: 5000 }} */
+          effect="fade"
           pagination={{
             clickable: true,
             el: `.${style.pagination_wrapper}`,
