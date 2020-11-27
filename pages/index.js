@@ -92,7 +92,7 @@ function Home({ page, posts_with_cat, error }) {
     >
       <div className={style.slider_wrapper}>
         <Swiper
-          /* autoplay={{ delay: 5000 }} */
+          autoplay={{ delay: 5000 }}
           effect="fade"
           pagination={{
             clickable: true,
@@ -110,7 +110,7 @@ function Home({ page, posts_with_cat, error }) {
                   <div
                     className={style.slide}
                     style={{
-                      backgroundImage: `url(${item.image})`,
+                      background: `center / cover no-repeat url(${item.image})`,
                     }}
                   >
                     <motion.div
