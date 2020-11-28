@@ -1,5 +1,4 @@
 .footer {
-  position: absolute;
   text-align: center;
   left: 0;
   bottom: 60px;
@@ -41,5 +40,8 @@
 @media (max-width: 470.999px) {
   .social_link {
     padding: 12px;
+  }
+  .btn_contact {
+    font-size: 12px;
   }
 }

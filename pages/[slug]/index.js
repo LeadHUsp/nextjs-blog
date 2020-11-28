@@ -136,6 +136,7 @@ function Portfolio({ page, totalPages, error }) {
       title={page.meta_title}
       meta_descr={page.meta_descr}
       meta_keywords={page.meta_keyw}
+      menu_btn_color="#000"
     >
       <section className={style.page_wrapper}>
         <h2 className={style.page_title}>портфолио</h2>

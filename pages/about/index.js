@@ -12,6 +12,7 @@ function About({ page }) {
       title={page.acf.meta_title}
       meta_descr={page.acf.meta_descr}
       meta_keywords={page.acf.meta_keyw}
+      menu_btn_color="#000"
     >
       <article className={style.about}>
         <div className="container">

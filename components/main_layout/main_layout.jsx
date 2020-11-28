@@ -18,6 +18,7 @@ export function MainLayout({
   title = 'Next App',
   meta_descr = 'blog on Next js',
   meta_keywords = 'blog react next redux',
+  menu_btn_color = '#fff',
 }) {
   const formAppearance = useSelector((state) => state.contact.is_open);
   const [menuShow, setMenuShow] = useState(false);
@@ -42,9 +43,12 @@ export function MainLayout({
             <VscChromeClose />
           </IconContext.Provider>{' '}
         </button>
-        <h1 className={style.title}>Personal site</h1>
-        <NavBar />
-        <Footer />
+        <div className={style.nav__wrapper}>
+          <h1 className={style.title}>Личный сайт</h1>
+
+          <NavBar />
+          <Footer />
+        </div>
       </aside>
 
       <motion.main className={style.main}>
@@ -54,7 +58,7 @@ export function MainLayout({
             setMenuShow(true);
           }}
         >
-          <IconContext.Provider value={{ size: 50, color: '#fff' }}>
+          <IconContext.Provider value={{ size: 50, color: menu_btn_color }}>
             <HiOutlineMenuAlt2 />
           </IconContext.Provider>{' '}
         </button>

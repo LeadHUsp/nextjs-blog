@@ -66,6 +66,7 @@
 }
 .error {
   position: absolute;
+  max-width: 70%;
   right: 0;
   color: red;
 }
@@ -92,5 +93,40 @@
   }
   &:hover {
     color: lighten(#228896, 10%);
+  }
+}
+@media (max-width: 460px) {
+  .contact_form {
+    padding: 30px 10px 10px;
+  }
+  .form_title {
+    font-size: 20px;
+  }
+  .input_wrapper {
+    margin-bottom: 20px;
+  }
+  .input,
+  .textarea,
+  .label,
+  .error,
+  .checkbox_error {
+    font-size: 12px;
+  }
+  .input:focus ~ .label,
+  .textarea:focus ~ .label,
+  .lable_animate {
+    font-size: 9px;
+  }
+  .textarea {
+    min-height: 80px;
+  }
+  .close_btn {
+    right: 10px;
+    top: 10px;
+  }
+  .checkbox_text {
+    width: calc(100% - 19px);
+    font-size: 14px;
+    padding-left: 10px;
   }
 }

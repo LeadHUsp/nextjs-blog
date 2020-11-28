@@ -76,7 +76,7 @@ function CheckBox({ name, closeForm }) {
           className={checkboxStyled.checkbox}
         />
         <span className={checkboxStyled.checkmark}></span>
-        <span>
+        <span className={style.checkbox_text}>
           Я принимаю условия&nbsp;
           <Link href="/privacy">
             <a className={style.link_privacy} onClick={closeForm}>

@@ -9,7 +9,20 @@
 .wrapper {
   position: fixed;
   width: 40%;
-  left: 35%;
+  left: 25%;
   top: 10%;
   z-index: 9999;
+}
+
+@media (max-width: 1200px) {
+  .wrapper {
+    width: 50%;
+  }
+}
+@media (max-width: 460px) {
+  .wrapper {
+    width: 90%;
+    top: 10%;
+    left: 5%;
+  }
 }
