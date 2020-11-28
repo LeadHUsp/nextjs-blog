@@ -1,8 +1,7 @@
 import { useState } from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-
+import { IconContext } from 'react-icons';
+import { FaChevronDown } from 'react-icons/fa';
+import { VscListFilter } from 'react-icons/vsc';
 import FilterCheckBox from '../../components/filter_checkbox/filter_checkbox';
 import style from './filter_container.module.scss';
 
@@ -23,9 +22,22 @@ function FilterContainer({
         className={style.filter_item_title}
         onClick={() => setActive((prev) => !prev)}
       >
+        <IconContext.Provider
+          value={{
+            /*  color: '#000', */ size: '20px',
+          }}
+        >
+          <VscListFilter />
+        </IconContext.Provider>
         {title}
         <div className={style.filter_item_icon}>
-          <FontAwesomeIcon icon={faChevronDown} />
+          <IconContext.Provider
+            value={{
+              /*  color: '#000', */ size: '15px',
+            }}
+          >
+            <FaChevronDown />
+          </IconContext.Provider>
         </div>
       </div>
       <div className={style.filter_item_body}>

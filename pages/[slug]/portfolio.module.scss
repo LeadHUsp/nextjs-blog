@@ -33,13 +33,46 @@
   width: 85%;
   padding-left: 25px;
   line-height: 140%;
+  p {
+    margin-bottom: 15px;
+  }
 }
 .filter_wrapper {
   display: flex;
   align-items: flex-start;
   justify-content: space-around;
   padding-bottom: 20px;
-  margin-right: -15px;
-  margin-left: -15px;
   width: 100%;
 }
+@media (max-width: 700px) {
+  .note_wrapper {
+    width: 100%;
+  }
+  .note_perview {
+    width: 20%;
+  }
+  .note_text {
+    width: 80%;
+  }
+}
+@media (max-width: 560px) {
+  .note_wrapper {
+    padding-bottom: 20px;
+    font-size: 15px;
+  }
+  .filter_wrapper {
+    flex-wrap: wrap;
+    padding-bottom: 0;
+  }
+}
+/* @media (max-width: 400px) {
+  .note_wrapper {
+    flex-wrap: wrap;
+  }
+  .note_perview {
+    width: 100%;
+  }
+  .note_text {
+    width: 100%;
+  }
+} */

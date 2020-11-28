@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 
 import { motion, useAnimation } from 'framer-motion';
 
-import { InView, useInView } from 'react-intersection-observer';
+import { useInView } from 'react-intersection-observer';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -100,9 +100,6 @@ function PortfolioCard({ animateControl, index, post }) {
       animate={windowWidth > 600 ? animateControl : responsiveCardControl}
       custom={windowWidth > 600 && index}
       className={style.blog_card}
-      /*   onMouseMove={() => {
-        setHovered(true);
-      }} */
       onClick={onMouseEnterHandler}
       onMouseEnter={onMouseEnterHandler}
       onMouseLeave={onMouseLeaveHeandler}

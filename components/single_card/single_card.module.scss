@@ -96,7 +96,12 @@
   color: #fff;
   padding: 10px;
 }
-@media (max-width: 998.999px) {
+@media (max-width: 1399.999px) {
+  .blog_card {
+    width: calc(33% - 20px);
+  }
+}
+@media (max-width: 1099.999px) {
   .blog_card {
     width: calc(50% - 20px);
   }
