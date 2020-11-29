@@ -88,7 +88,7 @@ function About({ page }) {
 }
 export default About;
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const res = await fetch(`${process.env.api_key}/pages/125`);
     const page = await res.json();
