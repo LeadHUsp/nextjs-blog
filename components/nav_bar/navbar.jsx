@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
+import { useState } from 'react';
 
 //icons import
 import { IconContext } from 'react-icons';
@@ -10,6 +11,12 @@ import style from './navbar.module.scss';
 
 function LinkItem({ href, text, icon }) {
   const router = useRouter();
+  const [disabled, setDisabled] = useState(false);
+  Router.events.on('routeChangeStart', () => {
+    setDisabled(true);
+  });
+  Router.events.on('routeChangeComplete', () => setDisabled(false));
+  Router.events.on('routeChangeError', () => setDisabled(false));
 
   return (
     <Link href={href}>
@@ -19,6 +26,7 @@ function LinkItem({ href, text, icon }) {
             ? style.active
             : ''
         }`}
+        style={{ pointerEvents: `${disabled ? 'none' : 'auto'}` }}
       >
         <span className={style.nav_item_text}>
           <IconContext.Provider value={{ className: `${style.nav_item_icon}` }}>

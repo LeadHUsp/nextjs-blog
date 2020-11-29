@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
+import Router from 'next/router';
 
 import NavBar from '../nav_bar/navbar';
 import Footer from '../footer/footer';
@@ -12,6 +13,7 @@ import { VscChromeClose } from 'react-icons/vsc';
 
 import style from './main_layout.module.scss';
 import { useState } from 'react';
+import Loader from '../loader/loader';
 
 export function MainLayout({
   children,
@@ -22,6 +24,12 @@ export function MainLayout({
 }) {
   const formAppearance = useSelector((state) => state.contact.is_open);
   const [menuShow, setMenuShow] = useState(false);
+  const [show, setShow] = useState(false);
+  Router.events.on('routeChangeStart', () => {
+    setShow(true);
+  });
+  Router.events.on('routeChangeComplete', () => setShow(false));
+  Router.events.on('routeChangeError', () => setShow(false));
 
   return (
     <>
@@ -52,6 +60,7 @@ export function MainLayout({
       </aside>
 
       <motion.main className={style.main}>
+        {show && <Loader />}
         <button
           className={style['menu__btn-show']}
           onClick={() => {

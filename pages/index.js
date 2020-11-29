@@ -81,7 +81,7 @@ function Home({ page, posts_with_cat, error }) {
 
   useEffect(() => {
     ItemTrigger(inView);
-    console.log(inView);
+    /*   console.log(inView); */
   }, [controls, inView]);
 
   return (
