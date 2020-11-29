@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 import { IconContext } from 'react-icons';
 import { VscDesktopDownload } from 'react-icons/vsc';
 
@@ -97,6 +96,7 @@ export async function getStaticProps() {
       props: {
         page,
       },
+      revalidate: 1,
     };
   } catch (error) {
     console.log(error);

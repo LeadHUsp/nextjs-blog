@@ -211,6 +211,7 @@ export async function getStaticProps() {
         page: page.acf,
         posts_with_cat,
       },
+      revalidate: 1,
     };
   } catch (error) {
     console.log(error);
