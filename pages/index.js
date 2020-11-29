@@ -93,6 +93,7 @@ function Home({ page, posts_with_cat, error }) {
       <div className={style.slider_wrapper}>
         <Swiper
           autoplay={{ delay: 5000 }}
+          loop
           effect="fade"
           pagination={{
             clickable: true,
@@ -113,9 +114,7 @@ function Home({ page, posts_with_cat, error }) {
                       background: `center / cover no-repeat url(${item.image})`,
                     }}
                   >
-                    <div className={style.slide_title}>{item.title}</div>
-                    <div className={style.slide_text}>{item.text}</div>
-                    {/* <motion.div
+                    <motion.div
                       initial="hidden"
                       animate={isActive ? 'visible' : 'hidden'}
                       variants={variants}
@@ -136,7 +135,7 @@ function Home({ page, posts_with_cat, error }) {
                       className={style.slide_text}
                     >
                       {item.text}
-                    </motion.div> */}
+                    </motion.div>
                   </div>
                 )}
               </SwiperSlide>
