@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import SwiperCore, { Pagination, EffectFade, Autoplay } from 'swiper';
+import SwiperCore, { Pagination, EffectFade, Autoplay, Virtual } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -105,7 +105,7 @@ function Home({ page, posts_with_cat, error }) {
         >
           {page.gallery.map((item, index) => {
             return (
-              <SwiperSlide key={item.id}>
+              <SwiperSlide key={item.image}>
                 {({ isActive }) => (
                   <div
                     className={style.slide}
@@ -113,7 +113,9 @@ function Home({ page, posts_with_cat, error }) {
                       background: `center / cover no-repeat url(${item.image})`,
                     }}
                   >
-                    <motion.div
+                    <div className={style.slide_title}>{item.title}</div>
+                    <div className={style.slide_text}>{item.text}</div>
+                    {/* <motion.div
                       initial="hidden"
                       animate={isActive ? 'visible' : 'hidden'}
                       variants={variants}
@@ -134,7 +136,7 @@ function Home({ page, posts_with_cat, error }) {
                       className={style.slide_text}
                     >
                       {item.text}
-                    </motion.div>
+                    </motion.div> */}
                   </div>
                 )}
               </SwiperSlide>
