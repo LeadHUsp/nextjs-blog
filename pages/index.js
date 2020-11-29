@@ -190,7 +190,7 @@ function Home({ page, posts_with_cat, error }) {
 }
 
 export default Home;
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const res = await fetch(`${process.env.api_key}/pages/38`);
     const page = await res.json();
