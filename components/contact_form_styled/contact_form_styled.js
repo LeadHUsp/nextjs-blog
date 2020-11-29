@@ -13,11 +13,10 @@ import { VscChromeClose } from 'react-icons/vsc';
 import style from './contact_form_styled.module.scss';
 import checkboxStyled from '../filter_checkbox/filter_checkbox.module.scss';
 
-function AnimatedInput({ textarea, label, field, form, ...props }) {
+function AnimatedInput({ disabled, textarea, label, field, form, ...props }) {
   const [hasText, setHasText] = useState(false);
 
   useEffect(() => {
-    /*  console.log(field); */
     if (field.value !== '') {
       setHasText(true);
     } else {
@@ -27,7 +26,12 @@ function AnimatedInput({ textarea, label, field, form, ...props }) {
   return (
     <>
       {!textarea ? (
-        <input className={style.input} {...field} {...props} />
+        <input
+          className={style.input}
+          {...field}
+          {...props}
+          disabled={disabled}
+        />
       ) : (
         <textarea className={style.input} {...field} {...props}></textarea>
       )}
@@ -97,31 +101,6 @@ const initialValues = {
   acceptedPrivacy: false,
   message: '',
 };
-
-/* async (values) => {
-  try {
-    // Default options are marked with *
-    console.log(values);
-    const response = await fetch(
-      `http://localhost:8000/auth/register`,
-      {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *client
-        body: JSON.stringify(values), // body data type must match "Content-Type" header
-      }
-    );
-    return await console.log(response.json()); // parses JSON response into native JavaScript objects
-  } catch (error) {
-    console.log(error);
-  }
-} */
 
 export default function ContactFormStyled({ closeForm }) {
   const dispatch = useDispatch();
@@ -199,8 +178,8 @@ export default function ContactFormStyled({ closeForm }) {
       >
         {({ values, errors, isSubmitting, isValidating }) => (
           <Form>
-            <Input name="name" label="Имя" />
-            <Input name="email" label="Email" />
+            <Input name="name" label="Имя" disabled={isSubmitting} />
+            <Input name="email" label="Email" disabled={isSubmitting} />
             <TextArea name="message" label="Сообщение" />
             <CheckBox name="acceptedPrivacy" closeForm={closeForm} />
             <div className={style.input_wrapper}>

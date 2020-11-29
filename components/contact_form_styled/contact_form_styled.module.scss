@@ -110,13 +110,17 @@
   .label,
   .error,
   .checkbox_error {
-    font-size: 12px;
+    font-size: 14px;
   }
   .input:focus ~ .label,
   .textarea:focus ~ .label,
   .lable_animate {
-    font-size: 9px;
+    transform: translateY(-20px);
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #228896;
   }
+
   .textarea {
     min-height: 80px;
   }

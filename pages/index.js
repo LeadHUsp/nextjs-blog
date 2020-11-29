@@ -105,7 +105,7 @@ function Home({ page, posts_with_cat, error }) {
         >
           {page.gallery.map((item, index) => {
             return (
-              <SwiperSlide key={item.id} key={index + 1}>
+              <SwiperSlide key={item.id}>
                 {({ isActive }) => (
                   <div
                     className={style.slide}
