@@ -1,14 +1,6 @@
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-
 import style from './loader.module.scss';
 
 export default function Loader() {
-  /*  const show = useSelector((state) => state.loader.is_show);
-  useEffect(() => {
-    console.log(show);
-  }, [show]); */
-
   return (
     <div className={style.loader}>
       <div className={style['loader__container']}>

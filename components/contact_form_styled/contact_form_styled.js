@@ -1,8 +1,7 @@
 import Link from 'next/link';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setResponse } from '../../store/reducers/contactReducer';
 
 import { Form, Formik, Field, useField, ErrorMessage } from 'formik';
 import { number, object, string, boolean, array, mixed } from 'yup';

@@ -13,7 +13,7 @@ import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 
 import style from './single_card.module.scss';
 
-function PortfolioCard({ animateControl, index, post }) {
+function PortfolioCard({ animateControl, index, post, slug }) {
   const [isHovered, setHovered] = useState(false);
 
   let windowWidth;
@@ -116,7 +116,7 @@ function PortfolioCard({ animateControl, index, post }) {
         className={style.link_wrapper}
         variants={linkVariants}
       >
-        <Link href={`/single_post/${post.slug}`}>
+        <Link href={`/${slug}/portfolio_work/${post.slug}`}>
           <a className={`${style.card_layer_link}`}>
             Подробнее <FontAwesomeIcon icon={faLongArrowAltRight} />
           </a>
@@ -124,7 +124,10 @@ function PortfolioCard({ animateControl, index, post }) {
       </motion.div>
 
       <div className={style.card_img} ref={ref}>
-        <img src={post.better_featured_image.source_url} alt="" />
+        <img
+          src={post.better_featured_image.source_url}
+          alt={post.better_featured_image.alt_text || ''}
+        />
         <div className={style.card_icon}>
           <FontAwesomeIcon icon={faHandPointUp} />
           &nbsp;Наведите, чтобы узнать подробнее
@@ -132,23 +135,17 @@ function PortfolioCard({ animateControl, index, post }) {
       </div>
 
       <div className={style.card_descr}>
-        <div className={style.card_title}>{post.title.rendered}</div>
+        <div className={style.card_title}>{post.acf.title}</div>
         <div className={style.card_category}>
           Категория: {post.categories[0]}
         </div>
         <div className={style.card_announcement}>{post.acf.announcement}</div>
-
-        <Link href={`/single_post/${post.slug}`}>
-          <a className={`${style.link_readmore} ${style.card_link}`}>
-            Подробнее
-          </a>
-        </Link>
       </div>
     </motion.div>
   );
 }
 
-function PortfolioCardContainer({ posts }) {
+function PortfolioCardContainer({ posts, slug }) {
   let windowWidth;
   typeof window !== 'undefined' ? (windowWidth = window.innerWidth) : null;
   const { ref, inView, entry } = useInView({ triggerOnce: true });
@@ -172,6 +169,7 @@ function PortfolioCardContainer({ posts }) {
             index={index}
             post={post}
             key={post.id}
+            slug={slug}
           />
         );
       })}

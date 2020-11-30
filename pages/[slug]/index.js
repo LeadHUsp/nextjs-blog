@@ -163,7 +163,10 @@ function Portfolio({ page, totalPages, error }) {
               onChangeHandler={onChangeHandler}
             />
           </div>
-          <PortfolioCardContainer posts={posts_with_cat} />
+          <PortfolioCardContainer
+            slug={router.query.slug}
+            posts={posts_with_cat}
+          />
           <Pagination
             slug={'portfolio'}
             totalPages={totalPages}
