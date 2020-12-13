@@ -7,7 +7,7 @@ export default function FormMessage({ actionClose, status }) {
   return (
     <div className={style.message}>
       <div className={style.message__icon}>
-        {status === 'succes' ? (
+        {status === 'success' ? (
           <div
             className={`${style.icon__container} ${style['icon__container-success']}`}
           >
@@ -35,7 +35,7 @@ export default function FormMessage({ actionClose, status }) {
       </div>
 
       <div className={style.message__text}>
-        {status === 'succes'
+        {status === 'success'
           ? 'Сообщение успешно отправлено'
           : 'Произошла ошибка попробуйте позже'}
       </div>

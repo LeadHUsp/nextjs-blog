@@ -7,7 +7,7 @@ const SUBMIT_FAil = 'contact/SUBMIT_FAil';
 
 let initialState = {
   is_open: false,
-  submit_success: true,
+  submit_success: false,
   submit_fail: false,
 };
 
