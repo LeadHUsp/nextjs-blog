@@ -1,16 +1,20 @@
 import Link from 'next/link';
 
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSubmitSuccess } from '../../store/reducers/contactReducer';
 
-import { Form, Formik, Field, useField, ErrorMessage } from 'formik';
-import { number, object, string, boolean, array, mixed } from 'yup';
+import { Form, Formik, Field, ErrorMessage } from 'formik';
+import { object, string, boolean } from 'yup';
 
 import { IconContext } from 'react-icons';
 import { VscChromeClose } from 'react-icons/vsc';
 
 import style from './contact_form_styled.module.scss';
 import checkboxStyled from '../filter_checkbox/filter_checkbox.module.scss';
+
+import FormLoader from '../UI_parts/form_loader/form_loader';
+import FormMessage from '../UI_parts/form_message/form_message';
 
 function AnimatedInput({ disabled, textarea, label, field, form, ...props }) {
   const [hasText, setHasText] = useState(false);
@@ -32,7 +36,12 @@ function AnimatedInput({ disabled, textarea, label, field, form, ...props }) {
           disabled={disabled}
         />
       ) : (
-        <textarea className={style.input} {...field} {...props}></textarea>
+        <textarea
+          className={style.input}
+          {...field}
+          {...props}
+          disabled={disabled}
+        ></textarea>
       )}
 
       <span className={`${style.label} ${hasText ? style.lable_animate : ''}`}>
@@ -42,17 +51,22 @@ function AnimatedInput({ disabled, textarea, label, field, form, ...props }) {
   );
 }
 
-function Input({ name, label }) {
+function Input({ name, label, disabled }) {
   return (
     <div className={style.input_wrapper}>
-      <Field name={name} component={AnimatedInput} label={label} />
+      <Field
+        name={name}
+        component={AnimatedInput}
+        disabled={disabled}
+        label={label}
+      />
       <span className={style.error}>
         <ErrorMessage name={name} />
       </span>
     </div>
   );
 }
-function TextArea({ name, label }) {
+function TextArea({ name, label, disabled }) {
   return (
     <div className={style.input_wrapper}>
       <Field
@@ -62,6 +76,7 @@ function TextArea({ name, label }) {
         row="10"
         className={style.textarea}
         label={label}
+        disabled={disabled}
       />
       <span className={style.error}>
         <ErrorMessage name={name} />
@@ -103,8 +118,21 @@ const initialValues = {
 
 export default function ContactFormStyled({ closeForm }) {
   const dispatch = useDispatch();
+  const submitSuccess = useSelector((state) => state.contact.submit_success);
+  const submitFail = useSelector((state) => state.contact.submit_fail);
+
   return (
     <div className={style.contact_form}>
+      {submitSuccess && (
+        <div className={style.form_message}>
+          <FormMessage actionClose={closeForm} status="success" />
+        </div>
+      )}
+      {submitFail && (
+        <div className={style.form_message}>
+          <FormMessage actionClose={closeForm} status="fail" />
+        </div>
+      )}
       <button onClick={closeForm} className={style.close_btn}>
         <IconContext.Provider
           value={{ size: 23, className: `${style.close_icon}` }}
@@ -129,7 +157,7 @@ export default function ContactFormStyled({ closeForm }) {
             ),
           acceptedPrivacy: boolean().oneOf(
             [true],
-            'Вы должны прочесть и согласиться с политикой'
+            'Вы должны прочесть и согласиться с политикой конфиденциальности'
           ),
 
           message: string()
@@ -140,36 +168,25 @@ export default function ContactFormStyled({ closeForm }) {
         initialValues={initialValues}
         onSubmit={async (values) => {
           try {
-            // Default options are marked with *
             let data = {
               service_id: process.env.email_services_id,
               template_id: process.env.email_template_id,
               user_id: process.env.email_user_id,
               template_params: values,
             };
-            const response = await fetch(
-              `https://api.emailjs.com/api/v1.0/email/send`,
-              {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                  'Content-Type': 'application/json',
-                  // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer', // no-referrer, *client
-                body: JSON.stringify(data), // body data type must match "Content-Type" header
-              }
-            );
-            console.log(response); // parses JSON response into native JavaScript objects
-            /* let res = await emailjs.sendForm(
-              process.env.email_services_id,
-              process.env.email_template_id,
-              values,
-              process.env.email_user_id
-            );
-            console.log(res); */
+            const response = await fetch(process.env.api_contact_form, {
+              method: 'POST',
+              credentials: 'same-origin',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              redirect: 'follow',
+              referrerPolicy: 'no-referrer',
+              body: JSON.stringify(data),
+            });
+            if (response.status === 200) {
+              dispatch(setSubmitSuccess());
+            }
           } catch (error) {
             console.log(error);
           }
@@ -185,13 +202,10 @@ export default function ContactFormStyled({ closeForm }) {
               <button
                 className={`download ${style.submit}`}
                 type="submit"
-                /*  disabled={isSubmitting || isValidating} */
+                disabled={isSubmitting || isValidating}
               >
-                {' '}
-                Отправить
+                {isSubmitting ? <FormLoader /> : 'Отправить'}
               </button>
-              {isSubmitting && 'is Submitting'}
-              {isValidating && 'is Validating'}
             </div>
           </Form>
         )}

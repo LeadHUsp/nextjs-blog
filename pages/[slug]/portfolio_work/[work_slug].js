@@ -3,7 +3,7 @@ import { MainLayout } from '../../../components/main_layout/main_layout';
 import style from './portfolio_work.module.scss';
 
 function SinglePost({ post }) {
-  console.log(post);
+  /*  console.log(post); */
 
   return (
     <MainLayout
@@ -14,7 +14,7 @@ function SinglePost({ post }) {
     >
       <main className={style.content}>
         <div className={style.content__wrapper}>
-          <header className={style.header}>
+          <div className={style.header}>
             <div className={style.header__img}>
               <img
                 src={post.better_featured_image.source_url}
@@ -30,7 +30,7 @@ function SinglePost({ post }) {
                 dangerouslySetInnerHTML={{ __html: post.content.rendered }}
               ></div>
             </div>
-          </header>
+          </div>
         </div>
       </main>
     </MainLayout>

@@ -2,11 +2,13 @@ import produce from 'immer';
 
 const OPEN_FORM = 'contact/OPEN_FORM';
 const CLOSE_FORM = 'contact/CLOSE_FORM';
-const SET_RESPONSE = 'contact/SET_RESPONSE';
+const SUBMIT_SUCCESS = 'contact/SUBMIT_SUCCESS';
+const SUBMIT_FAil = 'contact/SUBMIT_FAil';
 
 let initialState = {
   is_open: false,
-  response: '',
+  submit_success: true,
+  submit_fail: false,
 };
 
 export const contactReducer = (state = initialState, action) => {
@@ -16,9 +18,14 @@ export const contactReducer = (state = initialState, action) => {
     }
     if (action.type === CLOSE_FORM) {
       draft.is_open = false;
+      draft.submit_success = false;
+      draft.submit_fail = false;
     }
-    if (action.type === SET_RESPONSE) {
-      draft.response = action.payload;
+    if (action.type === SUBMIT_SUCCESS) {
+      draft.submit_success = true;
+    }
+    if (action.type === SUBMIT_FAil) {
+      draft.submit_fail = true;
     }
   });
 };
@@ -32,9 +39,13 @@ export const setCloseForm = () => {
     type: CLOSE_FORM,
   };
 };
-export const setResponse = (payload) => {
+export const setSubmitSuccess = () => {
   return {
-    type: SET_RESPONSE,
-    payload,
+    type: SUBMIT_SUCCESS,
+  };
+};
+export const setSubmitFail = () => {
+  return {
+    type: SUBMIT_FAil,
   };
 };

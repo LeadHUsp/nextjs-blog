@@ -1,4 +1,5 @@
 .contact_form {
+  position: relative;
   padding: 50px;
   background: #fff;
   width: 100%;
@@ -61,7 +62,7 @@
   min-width: 240px;
   margin: 0 auto;
   &:disabled {
-    background: #000;
+    background: darken(#ebeaea, 20%);
   }
 }
 .error {
@@ -94,6 +95,16 @@
   &:hover {
     color: lighten(#228896, 10%);
   }
+}
+.form_message {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+  z-index: 2000;
+  background: rgb(255, 255, 255);
 }
 @media (max-width: 460px) {
   .contact_form {

@@ -182,7 +182,7 @@ function Home({ page, posts_with_cat, error }) {
       <section className={style.blog}>
         <div className="container">
           <h2>Последние работы в портфолио</h2>
-          <PortfolioCardContainer posts={posts_with_cat} />
+          <PortfolioCardContainer posts={posts_with_cat} slug="portfolio" />
         </div>
       </section>
     </MainLayout>
