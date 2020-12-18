@@ -1,10 +1,13 @@
 import { MainLayout } from '../../../components/main_layout/main_layout';
+import Custom404 from '../../404';
 
 import style from './portfolio_work.module.scss';
 
-function SinglePost({ post }) {
+function SinglePost({ post, error }) {
   /*  console.log(post); */
-
+  if (error) {
+    return <Custom404 />;
+  }
   return (
     <MainLayout
       title={post.acf ? post.acf.meta_title : null}
@@ -44,13 +47,26 @@ export async function getServerSideProps(ctx) {
       `${process.env.api_key}/posts?slug=${ctx.query.work_slug}`
     );
     const post = await res.json();
-
-    return {
-      props: {
-        post: post[0],
-      },
-    };
+    /*     console.log(post); */
+    if (post.data !== undefined && post.data.status == '404') {
+      return {
+        props: {
+          error: true,
+        },
+      };
+    } else {
+      return {
+        props: {
+          post: post[0],
+        },
+      };
+    }
   } catch (error) {
     console.log(error);
+    return {
+      props: {
+        error: true,
+      },
+    };
   }
 }

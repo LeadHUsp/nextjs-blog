@@ -155,7 +155,7 @@ function PortfolioCardContainer({ posts, slug }) {
       controlBlogItem.start((i) => ({
         opacity: 1,
         x: 0,
-        transition: { ease: 'easeOut', duration: 1, delay: i * 0.5 },
+        transition: { ease: 'easeOut', duration: 0.5, delay: i * 0.3 },
       }));
     }
   }, [posts, inView]);

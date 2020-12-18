@@ -73,7 +73,6 @@ function TextArea({ name, label, disabled }) {
         name={name}
         component={AnimatedInput}
         textarea
-        row="10"
         className={style.textarea}
         label={label}
         disabled={disabled}
@@ -162,8 +161,8 @@ export default function ContactFormStyled({ closeForm }) {
 
           message: string()
             .required('Сообщение обязательно для заполнения')
-            .min(3)
-            .max(100),
+            .min(5, 'Постарайтесь придумать более длинное сообщение :)')
+            .max(100, 'Максимальная длина сообщения 100 символов'),
         })}
         initialValues={initialValues}
         onSubmit={async (values) => {
@@ -196,7 +195,11 @@ export default function ContactFormStyled({ closeForm }) {
           <Form>
             <Input name="name" label="Имя" disabled={isSubmitting} />
             <Input name="email" label="Email" disabled={isSubmitting} />
-            <TextArea name="message" label="Сообщение" />
+            <TextArea
+              name="message"
+              label="Сообщение"
+              disabled={isSubmitting}
+            />
             <CheckBox name="acceptedPrivacy" closeForm={closeForm} />
             <div className={style.input_wrapper}>
               <button

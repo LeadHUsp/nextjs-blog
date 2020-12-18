@@ -1,0 +1,12 @@
+.content {
+  padding: 70px 0;
+  max-width: 70%;
+  margin: 0 auto;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+}
+@media (max-width: 670px) {
+  .content {
+    max-width: 100%;
+    padding: 50px 15px;
+  }
+}

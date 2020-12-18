@@ -8,13 +8,13 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import * as queryString from 'query-string';
 import produce from 'immer';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment } from '@fortawesome/free-regular-svg-icons';
+
 /* components */
 import { MainLayout } from '../../components/main_layout/main_layout';
 import FilterContainer from '../../components/filter_container/filter_container';
 import PortfolioCardContainer from '../../components/single_card/single_card';
 import { Pagination } from '../../components/pagination/Pagination';
+import Custom404 from '../404';
 /* global state */
 import {
   setFilterItems,
@@ -35,7 +35,7 @@ function Portfolio({ page, totalPages, error }) {
   let currentPage = router.query ? router.query.page : 1;
 
   if (error) {
-    return <div>something going wrong</div>;
+    return <Custom404 />;
   }
 
   const dispatch = useDispatch();
@@ -182,8 +182,7 @@ function Portfolio({ page, totalPages, error }) {
 export default Portfolio;
 
 export async function getServerSideProps(ctx) {
-  const searchQuery = ctx.query;
-  let formatedSeacrQuery = produce(searchQuery, (draftSearchQuery) => {
+  let formatedSeacrQuery = produce(ctx.query, (draftSearchQuery) => {
     draftSearchQuery = mapValues(draftSearchQuery, function (value, key) {
       if (key === 'slug' || key === 'page') {
         delete draftSearchQuery[key];
@@ -222,18 +221,29 @@ export async function getServerSideProps(ctx) {
       });
       return post;
     });
-    const page_res = await fetch(`${process.env.api_key}/pages/98`);
+    const page_res = await fetch(
+      `${process.env.api_key}/pages?slug=${ctx.query.slug}`
+    );
     const page = await page_res.json();
     await dispatch(setPostData(posts_with_cat));
     await dispatch(setCategoriesData(categories));
     await dispatch(setTagsData(tags));
-    return {
-      props: {
-        page: page.acf,
-        totalPages,
-        initialReduxState: reduxStore.getState(),
-      },
-    };
+
+    if (page.data !== undefined && page.data.status == '404') {
+      return {
+        props: {
+          error: true,
+        },
+      };
+    } else {
+      return {
+        props: {
+          page: page[0].acf,
+          totalPages,
+          initialReduxState: reduxStore.getState(),
+        },
+      };
+    }
   } catch (error) {
     console.log(error);
     return {

@@ -5,7 +5,10 @@ import { VscDesktopDownload } from 'react-icons/vsc';
 import { MainLayout } from '../../components/main_layout/main_layout';
 import style from './about.module.scss';
 
-function About({ page }) {
+function About({ page, error }) {
+  if (error) {
+    return <Custom404 />;
+  }
   return (
     <MainLayout
       title={page.acf.meta_title}
@@ -41,30 +44,9 @@ function About({ page }) {
                   className={`${style.border} ${style.border_bottom_right}`}
                 ></span>
                 <ul>
-                  <li>Опыт работы: менее 6 месяцев</li>
-                  <li>
-                    Основные навыки: html, css, scss, javascript, react,next,
-                    redux, redux-thunk
-                  </li>
-                  <li>
-                    Дополнительные навыки:webpack, git, github, rest api, figma,
-                    photoshop
-                  </li>
-                  <li>
-                    Технологии с которыми работал, но не владею ими в полной
-                    мере: WordPress, Opencart, Strapi, ModX, tilda
-                  </li>
-                  <li>
-                    Высшее образование: специальность инженер-теплоэнергетик
-                  </li>
-                  <li>
-                    Учебное заведение: Донецкий национальный технический
-                    университет, Донецк (Украина)
-                  </li>
-                  <li>
-                    Дополнительное образование: курсы аккадемии "ШАГ" по
-                    направлению front-end разработка
-                  </li>
+                  {page.acf.item.map((item) => (
+                    <li>{item.text}</li>
+                  ))}
                 </ul>
                 <button className="download">
                   Скачать резюме
@@ -91,18 +73,25 @@ export async function getStaticProps() {
   try {
     const res = await fetch(`${process.env.api_key}/pages/125`);
     const page = await res.json();
-
-    return {
-      props: {
-        page,
-      },
-      revalidate: 1,
-    };
+    if (page.data !== undefined && page.data.status == '404') {
+      return {
+        props: {
+          error: true,
+        },
+      };
+    } else {
+      return {
+        props: {
+          page,
+        },
+        revalidate: 1,
+      };
+    }
   } catch (error) {
     console.log(error);
     return {
       props: {
-        error: error.message,
+        error: true,
       },
     };
   }
