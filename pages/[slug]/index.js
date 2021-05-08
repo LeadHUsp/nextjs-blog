@@ -214,8 +214,29 @@ export async function getServerSideProps({ query }) {
             fetch(`${process.env.api_key}/tags`),
             fetch(`${process.env.api_key}/pages?slug=${query.slug}`),
         ])
-            .then((responses) => Promise.all(responses.map((r) => r.json())))
-            .catch((error) => console.log(error));
+            .then((responses) =>
+                Promise.all(
+                    responses.map((r) => {
+                        if (r.status === 401 || r.status === 404) {
+                            return {
+                                props: {
+                                    error: true,
+                                },
+                            };
+                        } else {
+                            return r.json();
+                        }
+                    })
+                )
+            )
+            .catch((error) => {
+                console.log(error);
+                return {
+                    props: {
+                        error: true,
+                    },
+                };
+            });
         // const res = await fetch(
         //     `${process.env.api_key}/posts?per_page=8&page=${
         //         query.page ? Number(query.page.replace(/page_/, '')) : 1
@@ -234,7 +255,7 @@ export async function getServerSideProps({ query }) {
         await dispatch(setCategoriesData(categories));
         await dispatch(setTagsData(tags));
 
-        if (page.data !== undefined && page.data.status == '404') {
+        if (page.status == '404') {
             return {
                 props: {
                     error: true,

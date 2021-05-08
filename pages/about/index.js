@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { IconContext } from 'react-icons';
 import { VscDesktopDownload } from 'react-icons/vsc';
+import Custom404 from '../404';
 
 import { MainLayout } from '../../components/main_layout/main_layout';
 import style from './about.module.scss';
