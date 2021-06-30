@@ -5,5 +5,6 @@ module.exports = {
         email_services_id: 'service_n8f79ye',
         email_template_id: 'template_w1wgbhr',
         email_user_id: 'user_OkZaKJmEQ98hzyGMKs43Q',
+        captchaKey: '6LeGfgMbAAAAAMBDJX85st-0prA_ff0YMuNBU7ts',
     },
 };
